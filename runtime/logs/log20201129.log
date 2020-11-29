@@ -22,3 +22,6 @@
 [INFO][request.go:12]2020/11/29 16:02:27 [Password.Required Can not be empty]
 [INFO][request.go:12]2020/11/29 16:02:59 [Username.Required Can not be empty]
 [INFO][request.go:12]2020/11/29 16:02:59 [Password.Required Can not be empty]
+[INFO][request.go:12]2020/11/29 17:44:56 [Group.Required Can not be empty]
+[INFO][request.go:12]2020/11/29 17:46:54 [Group.Required Can not be empty]
+[INFO][request.go:12]2020/11/29 17:50:20 [Group.Required Can not be empty]

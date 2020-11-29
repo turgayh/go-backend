@@ -9,12 +9,13 @@ import (
 	"github.com/EDDYCJY/go-gin-example/pkg/app"
 	"github.com/EDDYCJY/go-gin-example/pkg/e"
 	"github.com/EDDYCJY/go-gin-example/pkg/util"
-	"github.com/EDDYCJY/go-gin-example/service/auth_service"
+	"github.com/EDDYCJY/go-gin-example/service/user_service"
 )
 
-type auth struct {
-	Username string `valid:"Required; MaxSize(50)"`
+type users struct {
+	Email    string `valid:"Required; MaxSize(50)"`
 	Password string `valid:"Required; MaxSize(50)"`
+	Group    string `valid:"Required; MaxSize(5)"`
 }
 
 // @Summary Get Auth
@@ -28,10 +29,10 @@ func GetAuth(c *gin.Context) {
 	appG := app.Gin{C: c}
 	valid := validation.Validation{}
 
-	username := c.PostForm("username")
+	email := c.PostForm("email")
 	password := c.PostForm("password")
-
-	a := auth{Username: username, Password: password}
+	group := c.PostForm("group")
+	a := users{Email: email, Password: password, Group: group}
 	ok, _ := valid.Valid(&a)
 
 	if !ok {
@@ -40,8 +41,8 @@ func GetAuth(c *gin.Context) {
 		return
 	}
 
-	authService := auth_service.Auth{Username: username, Password: password}
-	isExist, err := authService.Check()
+	userService := user_service.User{Email: email, Password: password}
+	isExist, err := userService.Check()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)
 		return
@@ -52,7 +53,7 @@ func GetAuth(c *gin.Context) {
 		return
 	}
 
-	token, err := util.GenerateToken(username, password)
+	token, err := util.GenerateToken(email, password)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_TOKEN, nil)
 		return
