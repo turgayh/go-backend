@@ -25,7 +25,7 @@ type users struct {
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
 // @Router /auth [get]
-func GetAuth(c *gin.Context) {
+func GetUser(c *gin.Context) {
 	appG := app.Gin{C: c}
 	valid := validation.Validation{}
 
@@ -61,5 +61,33 @@ func GetAuth(c *gin.Context) {
 
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
 		"token": token,
+	})
+}
+
+func CreateUser(c *gin.Context) {
+	appG := app.Gin{C: c}
+	valid := validation.Validation{}
+
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+	group := c.PostForm("group")
+	a := users{Email: email, Password: password, Group: group}
+	ok, _ := valid.Valid(&a)
+
+	if !ok {
+		app.MarkErrors(valid.Errors)
+		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
+		return
+	}
+
+	userService := user_service.User{Email: email, Password: password}
+	err := userService.Create()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"email": email,
 	})
 }

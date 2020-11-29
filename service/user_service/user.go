@@ -11,3 +11,7 @@ type User struct {
 func (a *User) Check() (bool, error) {
 	return models.CheckUser(a.Email, a.Password)
 }
+
+func (a *User) Create() error {
+	return models.CreateUser(a.Email, a.Password)
+}

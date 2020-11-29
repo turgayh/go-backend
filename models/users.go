@@ -37,3 +37,14 @@ func GetUserPermissionGroup(email string) (int, error) {
 
 	return -1, nil
 }
+
+func CreateUser(email, password string) error {
+	var users Users
+	users.Email = email
+	users.Password = password
+	if err := db.Create(&users).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
