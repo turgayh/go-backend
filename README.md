@@ -2,7 +2,6 @@
 
 An example of gin contains many useful features
 
-[简体中文](https://github.com/EDDYCJY/go-gin-example/blob/master/README_ZH.md)
 
 ## Installation
 ```
